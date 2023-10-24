@@ -38,32 +38,9 @@ btnSubmit.addEventListener("click", function () {
   const password = document.getElementById('password').value;
   removeParamQueryURL(errorMsgURL);
 
-  const countSession = sessionStorage.getItem('countsession');
-  const usern = sessionStorage.getItem('usern');
-  const datesession = sessionStorage.getItem('datesession');
-
   if (!userName || !password) {
     showMessageError('Ingresa tu usuario y/o contraseña.');
     return;
-  }
-
-  if (userName === usern) {
-    if (countSession === null) {
-      sessionStorage.setItem('countsession', 1);
-    } else {
-      sessionStorage.setItem('countsession', countSession + 1);
-    }
-
-    if (parseInt(datesession) <= Date.now()) sessionStorage.clear();
-    if (parseInt(countSession) >= 6) {
-      showMessageError('El usuario ha sido bloqueado por el numero de intentos excedidos (6).');
-      return;
-    }
-
-  } else {
-    sessionStorage.clear();
-    sessionStorage.setItem('usern', userName);
-    sessionStorage.setItem('datesession', parseInt(Date.now()) + 1500000);
   }
 
   if (userName.includes('@invex.com')) {
@@ -75,6 +52,7 @@ btnSubmit.addEventListener("click", function () {
   messageAlert.classList.add('hide');
   formSubmit.submit();
 });
+
 
 $(document).ready(function () {
   const urlParams = new URLSearchParams(window.location.search);

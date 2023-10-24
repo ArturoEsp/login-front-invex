@@ -63,6 +63,7 @@
             <label for="name" class="form__label">Contraseña *</label>
             <i class="bi bi-eye-slash" id="togglePassword"></i>
           </div>
+          <input type="hidden" name="sessionDataKey" value="<%=request.getParameter("sessionDataKey")%>"/>
           <button type="button" class="button-form" id="btnSubmit">
             Iniciar sesión
           </button>
