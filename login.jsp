@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./css/login.css" />
     <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
       src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
       integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
       crossorigin="anonymous"
@@ -15,7 +21,7 @@
     />
     <title>Pantalla &Uacute;nica | Cuenta Cr&eacute;dito</title>
   </head>
-  <body>
+  <body onload="checkSessionKey()">
     <div class="Header">
       <div class="logo">
         <img
@@ -63,7 +69,8 @@
             <label for="name" class="form__label">Contrase&ntilde;a *</label>
             <i class="bi bi-eye-slash" id="togglePassword"></i>
           </div>
-          <input type="hidden" name="sessionDataKey" value="<%=request.getParameter("sessionDataKey")%>"/>
+          <input type="hidden" name="sessionDataKey"
+          value="<%=request.getParameter("sessionDataKey")%>"/>
           <button type="button" class="button-form" id="btnSubmit">
             Iniciar sesi&oacute;n
           </button>
