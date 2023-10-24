@@ -36,7 +36,6 @@ const removeParamQueryURL = (param) => {
 btnSubmit.addEventListener("click", function () {
   const userName = document.getElementById('username').value;
   const password = document.getElementById('password').value;
-  removeParamQueryURL(errorMsgURL);
 
   if (!userName || !password) {
     showMessageError('Ingresa tu usuario y/o contraseña.');

@@ -13,7 +13,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
-    <title>Pantalla Única | Cuenta Crédito</title>
+    <title>Pantalla &Uacute;nica | Cuenta Cr&eacute;dito</title>
   </head>
   <body>
     <div class="Header">
@@ -39,33 +39,33 @@
           </button>
         </div>
         <form action="../../commonauth" autocomplete="off" id="formSubmit">
-          <h3>Inicia sesión</h3>
+          <h3>Inicia sesi&oacute;n</h3>
           <div class="form__group field">
             <input
               type="text"
               class="form__field"
-              placeholder="Usuario o correo electrónico *"
+              placeholder="Usuario o correo electr&oacute;nico *"
               name="username"
               id="username"
             />
             <label for="name" class="form__label"
-              >Usuario o correo electrónico *</label
+              >Usuario o correo electr&oacute;nico *</label
             >
           </div>
           <div class="form__group field">
             <input
               type="password"
               class="form__field"
-              placeholder="Contraseña *"
+              placeholder="Contrase&ntilde;a *"
               name="password"
               id="password"
             />
-            <label for="name" class="form__label">Contraseña *</label>
+            <label for="name" class="form__label">Contrase&ntilde;a *</label>
             <i class="bi bi-eye-slash" id="togglePassword"></i>
           </div>
           <input type="hidden" name="sessionDataKey" value="<%=request.getParameter("sessionDataKey")%>"/>
           <button type="button" class="button-form" id="btnSubmit">
-            Iniciar sesión
+            Iniciar sesi&oacute;n
           </button>
         </form>
       </div>
