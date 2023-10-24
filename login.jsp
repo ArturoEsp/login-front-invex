@@ -1,3 +1,99 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
+<%@ page import="java.io.File" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
+<%@ page import="java.util.Map" %>
+    
+<%@ include file="includes/localize.jsp" %>
+<jsp:directive.include file="includes/init-url.jsp"/>
+
+<%!
+    private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
+    private static final String IWA_AUTHENTICATOR = "IwaNTLMAuthenticator";
+    private static final String IS_SAAS_APP = "isSaaSApp";
+    private static final String BASIC_AUTHENTICATOR = "BasicAuthenticator";
+    private static final String IDENTIFIER_EXECUTOR = "IdentifierExecutor";
+    private static final String OPEN_ID_AUTHENTICATOR = "OpenIDAuthenticator";
+    private static final String JWT_BASIC_AUTHENTICATOR = "JWTBasicAuthenticator";
+    private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
+%>
+
+<%
+    request.getSession().invalidate();
+    String queryString = request.getQueryString();
+    Map<String, String> idpAuthenticatorMapping = null;
+    if (request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP) != null) {
+        idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
+    }
+
+    String errorMessage = "authentication.failed.please.retry";
+    String errorCode = "";
+    if(request.getParameter(Constants.ERROR_CODE)!=null){
+        errorCode = request.getParameter(Constants.ERROR_CODE) ;
+    }
+    String loginFailed = "false";
+
+    if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
+        loginFailed = "true";
+        String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
+        if (error != null && !error.isEmpty()) {
+            errorMessage = error;
+        }
+    }
+%>
+<%
+    boolean hasLocalLoginOptions = false;
+    boolean isBackChannelBasicAuth = false;
+    List<String> localAuthenticatorNames = new ArrayList<String>();
+
+    if (idpAuthenticatorMapping != null && idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) {
+        String authList = idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME);
+        if (authList != null) {
+            localAuthenticatorNames = Arrays.asList(authList.split(","));
+        }
+    }
+%>
+<%
+    boolean reCaptchaEnabled = false;
+    if (request.getParameter("reCaptcha") != null && "TRUE".equalsIgnoreCase(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
+%>
+<%
+    String inputType = request.getParameter("inputType");
+    String username = null;
+
+    if (isIdentifierFirstLogin(inputType)) {
+        String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
+        if (StringUtils.isBlank(authAPIURL)) {
+            authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
+        }
+        if (!authAPIURL.endsWith("/")) {
+            authAPIURL += "/";
+        }
+        authAPIURL += "context/" + request.getParameter("sessionDataKey");
+        String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
+        Gson gson = new Gson();
+        Map<String, Object> parameters = gson.fromJson(contextProperties, Map.class);
+        if (parameters != null) {
+            username = (String) parameters.get("username");
+        } else {
+            String redirectURL = "error.do";
+            response.sendRedirect(redirectURL);
+        }
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
