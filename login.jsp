@@ -69,12 +69,7 @@
             <label for="name" class="form__label">Contrase&ntilde;a *</label>
             <i class="bi bi-eye-slash" id="togglePassword"></i>
           </div>
-          <input
-            type="hidden"
-            name="sessionDataKey"
-            value='<%=Encode.forHtmlAttribute
-          (request.getParameter("sessionDataKey"))%>'
-          />
+          <input type="hidden" name="sessionDataKey" value="<%=request.getParameter("sessionDataKey")%>"/>
           <button type="button" class="button-form" id="btnSubmit">
             Iniciar sesi&oacute;n
           </button>
