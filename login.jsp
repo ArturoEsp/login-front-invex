@@ -81,8 +81,9 @@
                   />
                 </div>
               </div>
-              <input type="hidden" name="sessionDataKey"
-              value="<%=request.getParameter("sessionDataKey")%>"/>
+              <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
+              (request.getParameter("sessionDataKey"))%>'/>
+              
               <div class="container-form">
                 <div class="alert-message hide" id="alertMessage">
                   <span
@@ -162,6 +163,7 @@
         loadingButton(true);
         const username = $('#username').val();
         const pass = $('#password').val();
+        messageAlert.classList.remove('hide');
 
         if (!username && !pass) {
           showMessageError('Ingresa tu usuario/contraseña.');
