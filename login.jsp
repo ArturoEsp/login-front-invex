@@ -160,17 +160,15 @@
 
       function Mysubmit() {
         loadingButton(true);
+        messageAlert.classList.add('hide');
         const username = $('#username').val();
         const pass = $('#password').val();
-        messageAlert.classList.remove('hide');
 
         if (!username && !pass) {
-          showMessageError('Ingresa tu usuario/contraseña.');
+          showMessageError('Ingresa tu usuario/contrase&ntilde;a.');
           loadingButton(false);
           return;
-        } else {
-          messageAlert.classList.remove('hide');
-        } 
+        }
 
         if (username.includes("@invex.com")) {
           document.getElementById("username").value =
@@ -181,11 +179,7 @@
         }
 
         $("#form1").submit();
-        messageAlert.classList.remove('hide');
-
-        setTimeout(() => {
-          loadingButton(false);
-        }, 3000);
+        messageAlert.classList.add('hide');
       }
 
       $(document).ready(function () {
@@ -193,6 +187,7 @@
         const myParam = urlParams.get(errorMsgURL);
         if (myParam) {
           showMessageError(myParam);
+          loadingButton(false);
         }
       });
     </script>
