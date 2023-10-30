@@ -25,9 +25,9 @@ body {
   --border-radius-input: 3px
 }
 
-h1, h2, h3, h4, p, span {
+/* h1, h2, h3, h4, p, span {
   color: var(--color-text);
-}
+} */
 
 button {
   outline: 0;

@@ -1,0 +1,32 @@
+.my-carousel-autenticacion {
+    color: $two-color;
+
+    .carousel-indicators {
+        top:0px;
+        bottom: 85%;
+    }
+
+    .carousel-item {
+        margin-top: 20px;
+    }
+
+    .carousel-indicators li {
+        width: 100px;
+        height: 7px;
+        background-color: $main-color;
+    }
+}
+
+
+.carousel-adicionales {
+
+    .carousel-item img {
+        max-height: 100px;
+    }
+    .carousel-control-next, 
+    .carousel-control-prev
+    {
+        width: 5%;
+    }
+}
+
