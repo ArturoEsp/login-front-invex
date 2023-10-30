@@ -81,9 +81,8 @@
                   />
                 </div>
               </div>
-              <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
-              (request.getParameter("sessionDataKey"))%>'/>
-              
+              <input type="hidden" name="sessionDataKey" value="<%=request.getParameter("sessionDataKey")%>"/>
+
               <div class="container-form">
                 <div class="alert-message hide" id="alertMessage">
                   <span
