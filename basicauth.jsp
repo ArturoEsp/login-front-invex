@@ -209,7 +209,6 @@
     <% if (Boolean.parseBoolean(loginFailed)) { %>
     <%-- <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div> --%>
     <div class="ui visible negative message" id="error-msg"><%= errorMessage %></div>
-    <div class="ui visible negative message" id="error-msg"><%= loginFailed %></div>
     <% } else { %>
         <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
     <% } %>
@@ -223,7 +222,7 @@
                     value=""
                     name="usernameUserInput"
                     tabindex="1"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
+                    placeholder="Usuario"
                     required>
                 <i aria-hidden="true" class="user icon"></i>
                 <input id="username" name="username" type="hidden" value="<%=username%>">
@@ -241,22 +240,10 @@
                     value=""
                     autocomplete="off"
                     tabindex="2"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>">
+                    placeholder="Contraseña">
                 <i aria-hidden="true" class="lock icon"></i>
             </div>
         </div>
-    <%
-        if (reCaptchaEnabled) {
-    %>
-        <div class="field">
-            <div class="g-recaptcha"
-                 data-sitekey="<%=Encode.forHtmlContent(request.getParameter("reCaptchaKey"))%>">
-            </div>
-        </div>
-    <%
-        }
-    %>
-
     <%
         String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
         String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
@@ -297,96 +284,23 @@
         } 
     %>
     
-    <div class="buttons">
-        <% if (isRecoveryEPAvailable) { %>
-        <div class="field">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-            <% if (!isIdentifierFirstLogin(inputType)) { %>
-                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
-                </a>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
-            <% } %>
-            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
-            </a>
-            ?
-        </div>
-        <% } %>
 
-        <% if (isIdentifierFirstLogin(inputType)) { %>
-        <div class="field">
-            <a id="backLink" tabindex="7" onclick="goBack()">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
-            </a>
-        </div>
-        <% } %>
-    </div>
-
-    <div class="ui divider hidden"></div>
-
-    <div class="field">
-        <div class="ui checkbox">
-            <input tabindex="3" type="checkbox" id="chkRemember" name="chkRemember">
-            <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.me")%></label>
-        </div>
-    </div>
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
             (request.getParameter("sessionDataKey"))%>'/>
 
-    <div class="ui divider hidden"></div>
-
-    <div class="cookie-policy-message">
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies.short.description")%>
-        <a href="cookie_policy.do" target="policy-pane">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies")%>
-        </a>
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.for.more.details")%>
-        <br><br>
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description")%>
-        <a href="privacy_policy.do" target="policy-pane">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
-        </a>
-    </div>
-    <div class="ui divider hidden"></div>
 
     <div class="ui two column stackable grid">
-        <div class="column mobile center aligned tablet left aligned computer left aligned buttons tablet no-padding-left-first-child computer no-padding-left-first-child">
-            <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
-            <button
-                type="button"
-                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, urlParameters)%>';"
-                class="ui large button link-button"
-                id="registerLink"
-                tabindex="8"
-                role="button">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
-            </button>
-            <% } %>
-        </div>
         <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
             <button
                 type="submit"   
                 class="ui primary large button"
                 tabindex="4"
                 role="button">
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
+                Ingresar
             </button>
         </div>
     </div>
     
-    <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
-    <div class="ui divider hidden"></div>
-    <div class="field">
-        <div class="form-actions">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
-            <a id="registerLink"
-                href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail")%>
-            </a>
-        </div>
-    </div>
-    <% } %>
     <%!
         private String getRecoverAccountUrl (
             String identityMgtEndpointContext,
