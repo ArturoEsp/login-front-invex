@@ -196,7 +196,7 @@
         }
     }
 %>
-<h2>Es basicauth</h2>
+
 <form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="loginForm">
     <%
         if (loginFormActionURL.equals(samlssoURL) || loginFormActionURL.equals(oauth2AuthorizeURL)) {
@@ -207,7 +207,8 @@
     %>
 
     <% if (Boolean.parseBoolean(loginFailed)) { %>
-    <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div>
+    <%-- <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div> --%>
+    <div class="ui visible negative message" id="error-msg"><%= errorMessage %></div>
     <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
     <div class="ui visible negative message" id="error-msg">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>

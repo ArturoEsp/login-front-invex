@@ -21,7 +21,6 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
-<h2>Es tenauth</h2>
 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="loginForm">
     <% if (Boolean.parseBoolean(loginFailed)) { %>
     <div class="ui visible negative message" id="error-msg">

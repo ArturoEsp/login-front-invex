@@ -183,22 +183,6 @@
                             }
                         }
                     %>
-                    <%if (idpAuthenticatorMapping != null &&
-                            idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) { %>
-                
-                    <%} %>
-                    <%
-                        if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
-                                || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
-                    %>
-                    <% if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR) || 
-                            localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) { %>
-                    <div class="ui divider hidden"></div>
-                    <div class="ui horizontal divider">
-                        Or
-                    </div>
-                    <% } %>
-                    <div class="field">
                         <div class="ui vertical ui center aligned segment form" style="max-width: 300px; margin: 0 auto;">
                             <%
                                 int iconId = 0;
@@ -311,31 +295,10 @@
                             } %>
                             </div>
                         </div>
-                    <% } %>
                 </div>
             </div>
         </div>
     </main>
-
-    <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
-    <% } %>
-
-    <!-- footer -->
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
-        <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
-    <% } %>
 
     <script>
         function checkSessionKey() {
