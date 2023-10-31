@@ -209,10 +209,7 @@
     <% if (Boolean.parseBoolean(loginFailed)) { %>
     <%-- <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div> --%>
     <div class="ui visible negative message" id="error-msg"><%= errorMessage %></div>
-    <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
-    <div class="ui visible negative message" id="error-msg">
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
-    </div>
+    <div class="ui visible negative message" id="error-msg"><%= loginFailed %></div>
     <% } else { %>
         <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
     <% } %>
