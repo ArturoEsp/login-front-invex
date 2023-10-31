@@ -39,7 +39,6 @@
 <!doctype html>
 <html>
 <head>
-    <meta http-equiv="refresh" content="1; url=https://localhost:9443/oauth2/authorize?response_type=code&client_id=OZfb2icUEXehApXC8UCaMlHwFXYa&redirect_uri=https://invexluiss.modyo.cloud/loginunico/jwt&scope=openid FolioInternet,CUI,CodigoAplicacion">
     <!-- header -->
     <%
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
