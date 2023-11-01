@@ -72,7 +72,7 @@ $(document).ready(function () {
   const isAuthFailureMsg = urlParams.get(paramAuthFailureMsg);
 
   if (isAuthFailure) window.location.href = modifyUrl(isAuthFailureMsg);
-  if (isAuthFailureMsg) showMessageError(isAuthFailureMsg);
+  if (isAuthFailureMsg) showMessageError(isAuthFailureMsg.replace("?", ""));
 });
 
 function getParameterByName(name, url) {
