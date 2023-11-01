@@ -5,7 +5,14 @@ const buttonCloseMessageAlert = document.querySelector("#btnCloseAlert");
 const textMessageAlert = document.querySelector("#textAlerMessage");
 const btnSubmit = document.querySelector("#btnSubmit");
 const formSubmit = document.querySelector("#formSubmit");
-const errorMsgURL = "authFailureMsg";
+const paramAuthFailureMsg = "authFailureMsg";
+const paramAuthFailure = "authFailure";
+const URL_FRONT = "https://localhost:9443";
+const clientId = "OZfb2icUEXehApXC8UCaMlHwFXYa";
+const redirectUri = "https://invexluiss.modyo.cloud/loginunico/jwt&scope=openid FolioInternet,CUI,CodigoAplicacion";
+
+
+const hideMessageError = () =>  messageAlert.classList.add('hide');
 
 togglePassword.addEventListener("click", function () {
   const type = password.getAttribute("type") === "password" ? "text" : "password";
@@ -14,12 +21,16 @@ togglePassword.addEventListener("click", function () {
 });
 
 buttonCloseMessageAlert.addEventListener("click", function () {
-  messageAlert.classList.add('hide');
+  hideMessageError();
 });
 
 const showMessageError = (message) => {
   textMessageAlert.innerHTML = message;
   messageAlert.classList.remove('hide');
+}
+
+const modifyUrl = (msg) => {
+  return `${URL_FRONT}/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&authFailureMsg=${msg}`;
 }
 
 const removeParamQueryURL = (param) => {
@@ -48,17 +59,18 @@ btnSubmit.addEventListener("click", function () {
     document.getElementById('username').value = userName;
   }
 
-  messageAlert.classList.add('hide');
+  hideMessageError();
   formSubmit.submit();
 });
 
 
 $(document).ready(function () {
   const urlParams = new URLSearchParams(window.location.search);
-  const myParam = urlParams.get(errorMsgURL);
-  if (myParam) {
-    showMessageError(myParam);
-  }
+  const isAuthFailure = urlParams.get(paramAuthFailure);
+  const isAuthFailureMsg = urlParams.get(paramAuthFailureMsg);
+
+  if (isAuthFailure) window.location.href = modifyUrl(isAuthFailureMsg);
+  if (isAuthFailureMsg) showMessageError(isAuthFailureMsg);
 });
 
 function getParameterByName(name, url) {
