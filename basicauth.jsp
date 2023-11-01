@@ -66,7 +66,7 @@
                     console.warn("Prevented a possible double submit event");
                 } else {
                     e.preventDefault();
-
+                    console.log("Ejecutara funcion de preventDoubleSubmission");
                     var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
                     var tenantName = getParameterByName("tenantDomain");
                     var userName = document.getElementById("username");
@@ -131,7 +131,7 @@
 
             return this;
         };
-        $('#loginForm').preventDoubleSubmission();
+        // $('#loginForm').preventDoubleSubmission(); // Checar esta funcion el día de mañana
     });
 </script>
 
