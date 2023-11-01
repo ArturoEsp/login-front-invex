@@ -47,6 +47,7 @@ const removeParamQueryURL = (param) => {
 btnSubmit.addEventListener("click", function () {
   const userName = document.getElementById('username').value;
   const password = document.getElementById('password').value;
+  btnSubmit.disabled = true;
 
   if (!userName || !password) {
     showMessageError('Ingresa tu usuario y/o contraseña.');
@@ -61,6 +62,7 @@ btnSubmit.addEventListener("click", function () {
 
   hideMessageError();
   formSubmit.submit();
+  btnSubmit.disabled = false;
 });
 
 

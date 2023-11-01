@@ -150,6 +150,14 @@ button {
   transition: all .25s ease-in-out;
 }
 
+.button-form:disabled,
+.button-form[disabled],
+.button-form:disabled:hover {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
 .button-form:hover {
   background-color: var(--color-red-shadow-20);
 }
