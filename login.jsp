@@ -202,7 +202,39 @@
             });
         }
 
-        console.log(<%=request%>);
+        const btnSubmit = document.querySelector("#btnSubmit");
+        const formSubmit = document.querySelector("#loginForm");
+
+        btnSubmit.addEventListener("click", function () {
+            const userName = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!userName || !password) {
+                showMessageError('Ingresa tu usuario y/o contraseña.');
+                return;
+            }
+
+            if (userName.includes('@invex.com')) {
+                document.getElementById('username').value = userName + '@carbon.super';
+            } else if (userName.includes('@invex.com@carbon.super')) {
+                document.getElementById('username').value = userName;
+            }
+
+            formSubmit.submit();
+        });
+
+        $(document).ready(function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const myParam = urlParams.get('authFailure');
+            const msgError = urlParams.get('authFailureMsg');
+            const url = 'https://localhost:9443/oauth2/authorize?response_type=code&client_id=OZfb2icUEXehApXC8UCaMlHwFXYa&redirect_uri=https://invexluiss.modyo.cloud/loginunico/jwt&scope=openid FolioInternet,CUI,CodigoAplicacion&authFailureMsg=' + msgError;
+            if (myParam) {
+                window.location.href = url;
+            }
+        });
+
+
+        
 
         function getParameterByName(name, url) {
             if (!url) {
@@ -215,40 +247,6 @@
             if (!results[2]) return "";
             return decodeURIComponent(results[2].replace(/\+/g, ' '));
         }
-
-        $(document).ready(function () {
-            $('.main-link').click(function () {
-                $('.main-link').next().hide();
-                $(this).next().toggle('fast');
-                var w = $(document).width();
-                var h = $(document).height();
-                $('.overlay').css("width", w + "px").css("height", h + "px").show();
-            });
-            
-            $('.overlay').click(function () {
-                $(this).hide();
-                $('.main-link').next().hide();
-            });
-
-            <%
-                if(reCaptchaEnabled) {
-            %>
-                var error_msg = $("#error-msg");
-
-                $("#loginForm").submit(function (e) {
-                    var resp = $("[name='g-recaptcha-response']")[0].value;
-                    if (resp.trim() == '') {
-                        error_msg.text("<%=AuthenticationEndpointUtil.i18n(resourceBundle,"please.select.recaptcha")%>");
-                        error_msg.show();
-                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
-                        return false;
-                    }
-                    return true;
-                });
-            <%
-                }
-            %>
-        });
     
         function myFunction(key, value, name) {
             var object = document.getElementById(name);
@@ -290,21 +288,6 @@
             document.getElementById("changeUserForm").submit();
         }
 
-        $('.isHubIdpPopupButton').popup({
-            popup: '.isHubIdpPopup',
-            on: 'click',
-            position: 'top left',
-            delay: {
-                show: 300,
-                hide: 800
-            }
-        });
     </script>
-
-    <%!
-        private boolean isIdentifierFirstLogin(String inputType) {
-            return "idf".equalsIgnoreCase(inputType);
-        }
-    %>
 </body>
 </html>

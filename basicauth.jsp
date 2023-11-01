@@ -103,7 +103,8 @@
     <div class="ui two column stackable grid">
         <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
             <button
-                type="submit"   
+                type="button"
+                id="btnSubmit"
                 class="ui primary large button"
                 tabindex="4"
                 role="button">
