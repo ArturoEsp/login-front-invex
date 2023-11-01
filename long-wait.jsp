@@ -98,8 +98,9 @@
             }, refreshInterval);
     
             var timeoutListenerListener = window.setTimeout(function () {
-                window.clearInterval(intervalListener);
-                window.location.replace("retry.do");
+                console.log("timeoutListenerListener");
+                // window.clearInterval(intervalListener);
+                // window.location.replace("retry.do");
             }, timeout);
     
             function checkLongWaitStatus() {
