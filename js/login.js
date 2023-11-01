@@ -25,7 +25,7 @@ buttonCloseMessageAlert.addEventListener("click", function () {
 });
 
 const showMessageError = (message) => {
-  textMessageAlert.innerHTML = message;
+  textMessageAlert.innerHTML = message.replace("?", "");
   messageAlert.classList.remove('hide');
 }
 
@@ -72,7 +72,7 @@ $(document).ready(function () {
 
   if (isAuthFailure) window.location.href = modifyUrl(isAuthFailureMsg);
   if (isAuthFailureMsg) {
-    showMessageError(isAuthFailureMsg.replace("?", ""));
+    showMessageError(isAuthFailureMsg);
     btnSubmit.disabled = false;
   }
 });
