@@ -47,7 +47,6 @@ const removeParamQueryURL = (param) => {
 btnSubmit.addEventListener("click", function () {
   const userName = document.getElementById('username').value;
   const password = document.getElementById('password').value;
-  btnSubmit.disabled = true;
 
   if (!userName || !password) {
     showMessageError('Ingresa tu usuario y/o contraseña.');
@@ -61,8 +60,8 @@ btnSubmit.addEventListener("click", function () {
   }
 
   hideMessageError();
+  btnSubmit.disabled = true;
   formSubmit.submit();
-  btnSubmit.disabled = false;
 });
 
 
@@ -72,7 +71,10 @@ $(document).ready(function () {
   const isAuthFailureMsg = urlParams.get(paramAuthFailureMsg);
 
   if (isAuthFailure) window.location.href = modifyUrl(isAuthFailureMsg);
-  if (isAuthFailureMsg) showMessageError(isAuthFailureMsg.replace("?", ""));
+  if (isAuthFailureMsg) {
+    showMessageError(isAuthFailureMsg.replace("?", ""));
+    btnSubmit.disabled = false;
+  }
 });
 
 function getParameterByName(name, url) {
