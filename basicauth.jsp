@@ -57,163 +57,17 @@
     
     // Handle form submission preventing double submission.
     $(document).ready(function(){
-        $.fn.preventDoubleSubmission = function() {
-            $(this).on('submit',function(e){
-                var $form = $(this);
-                if ($form.data('submitted') === true) {
-                    // Previously submitted - don't submit again.
-                    e.preventDefault();
-                    console.warn("Prevented a possible double submit event");
-                } else {
-                    e.preventDefault();
-                    console.log("Ejecutara funcion de preventDoubleSubmission");
-                    var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
-                    var tenantName = getParameterByName("tenantDomain");
-                    var userName = document.getElementById("username");
-                    var usernameUserInput = document.getElementById("usernameUserInput");
-
-                    if (usernameUserInput) {
-                        var usernameUserInputValue = usernameUserInput.value.trim();
-
-                        if (tenantName && tenantName !== "null") {
-
-                            if (isEmailUsernameEnabled) {
-
-                                if (usernameUserInputValue.split("@").length <= 1) {
-                                    var errorMessage = document.getElementById("error-msg");
-
-                                    errorMessage.innerHTML = "Invalid Username. Username has to be an email address.";
-                                    errorMessage.style.display = "block";
-
-                                    return;
-                                }
-
-                                if (usernameUserInputValue.split("@").length === 2) {
-                                    userName.value = usernameUserInputValue + "@" + tenantName;
-                                }
-                                else {
-                                    userName.value = usernameUserInputValue;
-                                }
-                            } else {
-                                if (usernameUserInputValue.split("@").length > 1) {
-                                    userName.value = usernameUserInputValue;
-                                } else {
-                                    userName.value = usernameUserInputValue + "@" + tenantName;
-                                }
-
-                            }
-                            
-                        } else {
-                            userName.value = usernameUserInputValue;
-                        }
-                    }
-
-                    if (userName.value) {
-                        $.ajax({
-                            type: "GET",
-                            url: "/logincontext?sessionDataKey=" + getParameterByName("sessionDataKey") + 
-                                "&relyingParty=" + getParameterByName("relyingParty") + "&tenantDomain=" + tenantName,
-                            success: function (data) {
-                                if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
-                                    window.location.href = data.redirectUrl;
-                                } else if ($form.data('submitted') !== true) {
-                                    $form.data('submitted', true);
-                                    document.getElementById("loginForm").submit();
-                                } else {
-                                    console.warn("Prevented a possible double submit event.");
-                                }
-                            },
-                            cache: false
-                        });
-                    }
-                }
-            });
-
-            return this;
-        };
-        // $('#loginForm').preventDoubleSubmission(); // Checar esta funcion el día de mañana
+        $('#loginForm').preventDoubleSubmission(); // Checar esta funcion el día de mañana
     });
 </script>
 
-<%!
-    private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
-    private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
-    private static final String UTF_8 = "UTF-8";
-    private static final String TENANT_DOMAIN = "tenant-domain";
-%>
-<%
-    String resendUsername = request.getParameter("resend_username");
-    if (StringUtils.isNotBlank(resendUsername)) {
-
-        ResendCodeRequestDTO selfRegistrationRequest = new ResendCodeRequestDTO();
-        UserDTO userDTO = AuthenticationEndpointUtil.getUser(resendUsername);
-        selfRegistrationRequest.setUser(userDTO);
-
-        String path = config.getServletContext().getInitParameter(Constants.ACCOUNT_RECOVERY_REST_ENDPOINT_URL);
-        String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants
-                .PROXY_CONTEXT_PATH);
-        if (proxyContextPath == null) {
-            proxyContextPath = "";
-        }
-        String url;
-        if (StringUtils.isNotBlank(EndpointConfigManager.getServerOrigin())) {
-            url = EndpointConfigManager.getServerOrigin() + proxyContextPath + path;
-        } else {
-            url = IdentityUtil.getServerURL(path, true, false);
-        }
-        url = url.replace(TENANT_DOMAIN, userDTO.getTenantDomain());
-
-        List<JSONProvider> providers = new ArrayList<JSONProvider>();
-        JSONProvider jsonProvider = new JSONProvider();
-        jsonProvider.setDropRootElement(true);
-        jsonProvider.setIgnoreNamespaces(true);
-        jsonProvider.setValidateOutput(true);
-        jsonProvider.setSupportUnwrapped(true);
-        providers.add(jsonProvider);
-
-        String toEncode = EndpointConfigManager.getAppName() + ":" + String
-                .valueOf(EndpointConfigManager.getAppPassword());
-        byte[] encoding = Base64.encodeBase64(toEncode.getBytes());
-        String authHeader = new String(encoding, Charset.defaultCharset());
-        String header = "Client " + authHeader;
-
-        SelfUserRegistrationResource selfUserRegistrationResource = JAXRSClientFactory
-                .create(url, SelfUserRegistrationResource.class, providers);
-        WebClient.client(selfUserRegistrationResource).header("Authorization", header);
-        Response selfRegistrationResponse = selfUserRegistrationResource.regenerateCode(selfRegistrationRequest);
-        if (selfRegistrationResponse != null &&  selfRegistrationResponse.getStatus() == HttpStatus.SC_CREATED) {
-%>
-<div class="ui visible info message">
-    <%=AuthenticationEndpointUtil.i18n(resourceBundle,Constants.ACCOUNT_RESEND_SUCCESS_RESOURCE)%>
-</div>
-<%
-} else {
-%>
-<div class="ui visible negative message">
-    <%=AuthenticationEndpointUtil.i18n(resourceBundle,Constants.ACCOUNT_RESEND_FAIL_RESOURCE)%>
-</div>
-<%
-        }
-    }
-%>
-
 <form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="loginForm">
-    <%
-        if (loginFormActionURL.equals(samlssoURL) || loginFormActionURL.equals(oauth2AuthorizeURL)) {
-    %>
-    <input id="tocommonauth" name="tocommonauth" type="hidden" value="true">
-    <%
-        }
-    %>
-
     <% if (Boolean.parseBoolean(loginFailed)) { %>
-    <%-- <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div> --%>
     <div class="ui visible negative message" id="error-msg"><%= errorMessage %></div>
     <% } else { %>
         <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
     <% } %>
 
-    <% if (!isIdentifierFirstLogin(inputType)) { %>
         <div class="field">
             <div class="ui fluid left icon input">
                 <input
@@ -228,9 +82,6 @@
                 <input id="username" name="username" type="hidden" value="<%=username%>">
             </div>
         </div>
-    <% } else { %>
-        <input id="username" name="username" type="hidden" value="<%=username%>">
-    <% } %>
         <div class="field">
             <div class="ui fluid left icon input">
                 <input
@@ -244,46 +95,6 @@
                 <i aria-hidden="true" class="lock icon"></i>
             </div>
         </div>
-    <%
-        String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
-        String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
-        Boolean isRecoveryEPAvailable = false;
-        Boolean isSelfSignUpEPAvailable = false;
-        String identityMgtEndpointContext = "";
-        String urlEncodedURL = "";
-        String urlParameters = "";
-
-        if (StringUtils.isNotBlank(recoveryEPAvailable)) {
-            isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
-        } else {
-            isRecoveryEPAvailable = isRecoveryEPAvailable();
-        }
-
-        if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
-            isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
-        } else {
-            isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
-        }
-
-        if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
-            String scheme = request.getScheme();
-            String serverName = request.getServerName();
-            int serverPort = request.getServerPort();
-            String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-            String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-            String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
-
-            urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
-            urlParameters = prmstr;
-
-            identityMgtEndpointContext =
-                    application.getInitParameter("IdentityManagementEndpointContextURL");
-            if (StringUtils.isBlank(identityMgtEndpointContext)) {
-                identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
-            }
-        } 
-    %>
-    
 
     <input type="hidden" name="sessionDataKey" value='<%=Encode.forHtmlAttribute
             (request.getParameter("sessionDataKey"))%>'/>
@@ -300,25 +111,4 @@
             </button>
         </div>
     </div>
-    
-    <%!
-        private String getRecoverAccountUrl (
-            String identityMgtEndpointContext,
-            String urlEncodedURL,
-            boolean isUsernameRecovery,
-            String urlParameters) {
-
-            return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
-                "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-        }
-
-        private String getRegistrationUrl (
-            String identityMgtEndpointContext,
-            String urlEncodedURL,
-            String urlParameters) {
-
-            return identityMgtEndpointContext + "/register.do?" + urlParameters +
-                "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-        }
-    %>
 </form>
