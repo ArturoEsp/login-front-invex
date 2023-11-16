@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cerrando tu sesión</title>
+    <title>Cerrando tu sesion</title>
   </head>
   <body>
-    Cerrando tu sesión...
+    Cerrando tu sesion...
   </body>
   <script>
     setTimeout(() => {
