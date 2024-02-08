@@ -19,7 +19,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
-    <title>Recupera mi contraseña | INVEX</title>
+    <title>Recupera mi contrase&ntilde;a | INVEX</title>
   </head>
   <body>
     <div class="Header">
@@ -32,7 +32,7 @@
     </div>
     <div class="center-content padding-32">
         <div class="SquareBox flex gap-24 column" style="max-width: 460px">
-          <h3 class="text-aling-center ">La información de recuperación de contraseña ha sido enviada al correo electrónico de tu cuenta.</h3>
+          <h3 class="text-aling-center ">La informaci&oacute;n de recuperaci&oacute;n de contrase&ntilde;a ha sido enviada al correo electr&oacute;nico de tu cuenta.</h3>
           <button type="button" class="button-form" id="btnRecover">
             Regresar
           </button>

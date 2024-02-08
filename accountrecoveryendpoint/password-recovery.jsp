@@ -21,7 +21,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
     />
-    <title>Recupera mi contraseña | INVEX</title>
+    <title>Recupera mi contrase&ntilde;a | INVEX</title>
   </head>
   <body>
     <div class="Header">
@@ -34,9 +34,9 @@
     </div>
     <div class="center-content padding-32">
       <div class="SquareBox flex gap-24 column" style="max-width: 460px">
-        <h2>Recuperar contraseña</h2>
+        <h2>Recuperar contrase&ntilde;a</h2>
         <p>
-          Para realizar la recuperación de tu contraseña es necesario contar con
+          Para realizar la recuperaci&oacute;n de tu contrase&ntilde;a es necesario contar con
           tu usuario.
         </p>
         <div class="alert-message hide" id="alertMessage">
