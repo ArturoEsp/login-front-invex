@@ -14,7 +14,6 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-
 }
 
 :root {
@@ -25,15 +24,48 @@ body {
   --border-radius-input: 3px
 }
 
-/* h1, h2, h3, h4, p, span {
+.center-content {
+  display: grid;
+  place-content: center;
+  height: 100%;
+}
+
+.text-aling-center {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex.column {
+  flex-direction: column;
+}
+
+.gap-16 {
+  gap: 16px;
+}
+
+.gap-24 {
+  gap: 24px;
+}
+
+.gap-32 {
+  gap: 32px;
+}
+
+.padding-32 {
+  padding: 32px;
+}
+
+h1, h2, h3, h4, p {
   color: var(--color-text);
-} */
+}
 
 button {
   outline: 0;
   border: 0;
 }
-
 
 .Header {
   background-color: var(--color-red);
@@ -91,6 +123,13 @@ button {
   font-size: 1.5rem;
   font-weight: 500;
 
+}
+
+/* Square Box */
+.SquareBox {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+  padding: 32px;
+  border-radius: 8px;
 }
 
 /* Alert Message */
@@ -160,6 +199,17 @@ button {
 
 .button-form:hover {
   background-color: var(--color-red-shadow-20);
+}
+
+.button-text {
+  width: 100%;
+  padding: 12px;
+  color: #fff;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  color: var(--color-red);
+  background-color: transparent;
+  font-weight: 500;
 }
 
 .form__group {
@@ -260,11 +310,11 @@ button {
     margin-top: 20px;
   }
 
-  
-.Body .container-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 20px;
-}
+
+  .Body .container-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 20px;
+  }
 }
