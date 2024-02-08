@@ -49,10 +49,8 @@
           </button>
         </div>
         <form
-          action=""
           class="flex gap-16 column"
-          method="post"
-          action="verify.do"
+          method="post" action="verify.do"
           id="recoverDetailsForm"
         >
           <input type="hidden" name="recoveryOption" value="EMAIL" checked />
