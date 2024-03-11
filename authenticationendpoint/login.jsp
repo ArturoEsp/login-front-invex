@@ -1,4 +1,23 @@
+<%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
+<%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
+<%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
+<%@ page import="org.apache.http.HttpStatus" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.SelfUserRegistrationResource" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.ResendCodeRequestDTO" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.bean.UserDTO" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.net.URLDecoder" %>
+<%@ page import="javax.ws.rs.core.Response" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isSelfSignUpEPAvailable" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
+<%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="java.nio.charset.Charset" %>
+<%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -77,6 +96,19 @@
             Iniciar sesi&oacute;n
           </button>
         </form>
+        <div class="field">
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
+        <% if (!isIdentifierFirstLogin(inputType)) { %>
+            <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
+            </a>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
+        <% } %>
+        <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
+        </a>
+        ?
+    </div>
       </div>
     </div>
   </body>
