@@ -95,5 +95,5 @@
       </div>
     </div>
   </body>
-  <script src="../authenticationendpoint/js/login.js"></script>
+  <script src="../authenticationendpoint/js/login.js" type="module"></script>
 </html>

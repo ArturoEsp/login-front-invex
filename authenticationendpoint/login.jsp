@@ -19,49 +19,11 @@
 <%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
-<%
-    private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
-    private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
-    private static final String UTF_8 = "UTF-8";
-    private static final String TENANT_DOMAIN = "tenant-domain";
-
-    String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
-    String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
-    Boolean isRecoveryEPAvailable = false;
-    Boolean isSelfSignUpEPAvailable = false;
-    String identityMgtEndpointContext = "";
-    String urlEncodedURL = "";
-    String urlParameters = "";
-
-    if (StringUtils.isNotBlank(recoveryEPAvailable)) {
-        isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
-    } else {
-        isRecoveryEPAvailable = isRecoveryEPAvailable();
-    }
-
-    if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
-        isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
-    } else {
-        isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
-    }
-
-    if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
-        String scheme = request.getScheme();
-        String serverName = request.getServerName();
-        int serverPort = request.getServerPort();
-        String uri = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_REQUEST_URI);
-        String prmstr = URLDecoder.decode(((String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING)), UTF_8);
-        String urlWithoutEncoding = scheme + "://" +serverName + ":" + serverPort + uri + "?" + prmstr;
-
-        urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
-        urlParameters = prmstr;
-
-        identityMgtEndpointContext =
-                application.getInitParameter("IdentityManagementEndpointContextURL");
-        if (StringUtils.isBlank(identityMgtEndpointContext)) {
-            identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
-        }
-    } 
+<%!
+  private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
+  private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
+  private static final String UTF_8 = "UTF-8";
+  private static final String TENANT_DOMAIN = "tenant-domain";
 %>
 
 <!DOCTYPE html>
@@ -141,27 +103,6 @@
             Iniciar sesi&oacute;n
           </button>
         </form>
-
-        <%!
-        private String getRecoverAccountUrl (
-            String identityMgtEndpointContext,
-            String urlEncodedURL,
-            boolean isUsernameRecovery,
-            String urlParameters) {
-
-            return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
-                "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-        }
-
-        private String getRegistrationUrl (
-            String identityMgtEndpointContext,
-            String urlEncodedURL,
-            String urlParameters) {
-
-            return identityMgtEndpointContext + "/register.do?" + urlParameters +
-                "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-        }
-    %>
 
         <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
             Recuperar contraseña
