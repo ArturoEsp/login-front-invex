@@ -20,6 +20,11 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
 <%
+    private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
+    private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
+    private static final String UTF_8 = "UTF-8";
+    private static final String TENANT_DOMAIN = "tenant-domain";
+
     String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
     String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
     Boolean isRecoveryEPAvailable = false;
