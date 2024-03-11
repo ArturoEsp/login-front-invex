@@ -96,19 +96,31 @@
             Iniciar sesi&oacute;n
           </button>
         </form>
-        <div class="field">
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-        <% if (!isIdentifierFirstLogin(inputType)) { %>
-            <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
-            </a>
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
-        <% } %>
+
+        <%!
+        private String getRecoverAccountUrl (
+            String identityMgtEndpointContext,
+            String urlEncodedURL,
+            boolean isUsernameRecovery,
+            String urlParameters) {
+
+            return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
+                "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+        }
+
+        private String getRegistrationUrl (
+            String identityMgtEndpointContext,
+            String urlEncodedURL,
+            String urlParameters) {
+
+            return identityMgtEndpointContext + "/register.do?" + urlParameters +
+                "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+        }
+    %>
+
         <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
+            Recuperar contraseña
         </a>
-        ?
-    </div>
       </div>
     </div>
   </body>
