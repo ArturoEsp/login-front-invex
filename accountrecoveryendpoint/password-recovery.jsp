@@ -149,7 +149,7 @@
             <input id="username" name="username" type="hidden" required>
             <label for="name" class="form__label">Ingresa tu usuario</label>
           </div>
-          <button type="button" class="button-form" id="btnRecover">
+          <button type="submit" class="button-form" id="btnRecover">
             Enviar
           </button>
           <button type="button" class="button-text" id="btnBackLogin">
