@@ -1,4 +1,18 @@
-<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.owasp.encoder.Encode" %> <% boolean error =
+IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
+String errorMsg =
+IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+String username = request.getParameter("username"); boolean isSaaSApp =
+Boolean.parseBoolean(request.getParameter("isSaaSApp")); String tenantDomain =
+request.getParameter("tenantDomain"); boolean isEmailNotificationEnabled =
+false; isEmailNotificationEnabled =
+Boolean.parseBoolean(application.getInitParameter(
+IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
+String emailUsernameEnable =
+application.getInitParameter("EnableEmailUserName"); Boolean
+isEmailUsernameEnabled = false; if (StringUtils.isNotBlank(emailUsernameEnable))
+{ isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable); } else {
+isEmailUsernameEnabled = isEmailUsernameEnabled(); } %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -36,8 +50,8 @@
       <div class="SquareBox flex gap-24 column" style="max-width: 460px">
         <h2>Recuperar contrase&ntilde;a</h2>
         <p>
-          Para realizar la recuperaci&oacute;n de tu contrase&ntilde;a es necesario contar con
-          tu usuario.
+          Para realizar la recuperaci&oacute;n de tu contrase&ntilde;a es
+          necesario contar con tu usuario.
         </p>
         <div class="alert-message hide" id="alertMessage">
           <span
@@ -50,7 +64,8 @@
         </div>
         <form
           class="flex gap-16 column"
-          method="post" action="verify.do"
+          method="post"
+          action="verify.do"
           id="recoverDetailsForm"
         >
           <input type="hidden" name="recoveryOption" value="EMAIL" checked />
@@ -80,9 +95,10 @@
               type="text"
               class="form__field"
               placeholder="Ingresa tu usuario"
-              name="username"
-              id="username"
+              name="usernameUserInput"
+              id="usernameUserInput"
             />
+            <input id="username" name="username" type="hidden" required>
             <label for="name" class="form__label">Ingresa tu usuario</label>
           </div>
           <button type="button" class="button-form" id="btnRecover">
@@ -94,6 +110,73 @@
         </form>
       </div>
     </div>
+    <script>
+      $(document).ready(function () {
+
+        $("#recoverDetailsForm").submit(function (e) {
+            var errorMessage = $("#error-msg");
+            errorMessage.hide();
+
+            var isSaaSApp = JSON.parse("<%= isSaaSApp %>");
+            var tenantDomain = "<%= tenantDomain %>";
+            var isEmailUsernameEnabled = JSON.parse("<%= isEmailUsernameEnabled %>");
+
+            var userName = document.getElementById("username");
+            var usernameUserInput = document.getElementById("usernameUserInput");
+            var usernameUserInputValue = usernameUserInput.value.trim();
+
+            if ((tenantDomain !== "null") && !isSaaSApp) {
+                if (!isEmailUsernameEnabled && (usernameUserInputValue.split("@").length >= 2)) {
+
+                    errorMessage.text(
+                        "Invalid Username. Username shouldn't have '@' or any other special characters.");
+                    errorMessage.show();
+
+                    return;
+                }
+
+                if (isEmailUsernameEnabled && (usernameUserInputValue.split("@").length <= 1)) {
+
+                    errorMessage.text("Invalid Username. Username has to be an email address.");
+                    errorMessage.show();
+
+                    return;
+                }
+
+                userName.value = usernameUserInputValue + "@" + tenantDomain;
+            } else {
+                userName.value = usernameUserInputValue;
+            }
+
+
+            var firstName = $("#username").val();
+
+            if (firstName == '') {
+                errorMessage.text("Please fill the first name.");
+                errorMessage.show();
+                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+
+                return false;
+            }
+
+            // Validate reCaptcha
+            <% if (reCaptchaEnabled) { %>
+
+            var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
+            if (reCaptchaResponse.trim() == '') {
+                errorMessage.text("Please select reCaptcha.");
+                errorMessage.show();
+                $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
+
+                return false;
+            }
+
+            <% } %>
+
+            return true;
+        });
+      });
+    </script>
   </body>
-  <script src="../authenticationendpoint/js/login.js" type="module"></script>
 </html>
