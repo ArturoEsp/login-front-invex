@@ -1,4 +1,19 @@
-<%@ page import="org.owasp.encoder.Encode" %> 
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isEmailUsernameEnabled" %>
+<%@ page import="java.io.File" %>
+<%@ page import="java.util.*" %>
+
 <%
   boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
   String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
