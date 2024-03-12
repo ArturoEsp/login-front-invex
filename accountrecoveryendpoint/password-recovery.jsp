@@ -1,18 +1,51 @@
-<%@ page import="org.owasp.encoder.Encode" %> <% boolean error =
-IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
-String errorMsg =
-IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
-String username = request.getParameter("username"); boolean isSaaSApp =
-Boolean.parseBoolean(request.getParameter("isSaaSApp")); String tenantDomain =
-request.getParameter("tenantDomain"); boolean isEmailNotificationEnabled =
-false; isEmailNotificationEnabled =
-Boolean.parseBoolean(application.getInitParameter(
-IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
-String emailUsernameEnable =
-application.getInitParameter("EnableEmailUserName"); Boolean
-isEmailUsernameEnabled = false; if (StringUtils.isNotBlank(emailUsernameEnable))
-{ isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable); } else {
-isEmailUsernameEnabled = isEmailUsernameEnabled(); } %>
+<%@ page import="org.owasp.encoder.Encode" %> 
+<%
+  boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
+  String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
+  String username = request.getParameter("username");
+  boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
+  String tenantDomain = request.getParameter("tenantDomain");
+
+  ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
+  try {
+      ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
+              "password-recovery");
+
+      if (reCaptchaProperties.getReCaptchaEnabled()) {
+          Map<String, List<String>> headers = new HashMap<>();
+          headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
+          headers.put("reCaptchaAPI", Arrays.asList(reCaptchaProperties.getReCaptchaAPI()));
+          headers.put("reCaptchaKey", Arrays.asList(reCaptchaProperties.getReCaptchaKey()));
+          IdentityManagementEndpointUtil.addReCaptchaHeaders(request, headers);
+      }
+  } catch (ApiException e) {
+      request.setAttribute("error", true);
+      request.setAttribute("errorMsg", e.getMessage());
+      request.getRequestDispatcher("error.jsp").forward(request, response);
+      return;
+  }
+
+  boolean isEmailNotificationEnabled = false;
+
+  isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
+          IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
+
+  boolean reCaptchaEnabled = false;
+
+  if (request.getAttribute("reCaptcha") != null &&
+          "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
+      reCaptchaEnabled = true;
+  }
+
+  String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
+  Boolean isEmailUsernameEnabled = false;
+
+  if (StringUtils.isNotBlank(emailUsernameEnable)) {
+      isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
+  } else {
+      isEmailUsernameEnabled = isEmailUsernameEnabled();
+  }
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -69,8 +102,8 @@ isEmailUsernameEnabled = isEmailUsernameEnabled(); } %>
           id="recoverDetailsForm"
         >
           <input type="hidden" name="recoveryOption" value="EMAIL" checked />
-          <% String callback = request.getParameter("callback"); if (callback !=
-          null) { %>
+          <% String callback = request.getParameter("callback"); 
+            if (callback != null) { %>
           <div>
             <input
               type="hidden"
@@ -78,8 +111,8 @@ isEmailUsernameEnabled = isEmailUsernameEnabled(); } %>
               value="<%=Encode.forHtmlAttribute(callback) %>"
             />
           </div>
-          <% } %> <% String sessionDataKey =
-          request.getParameter("sessionDataKey"); if (sessionDataKey != null) {
+          <% } %> <% String sessionDataKey = request.getParameter("sessionDataKey"); 
+            if (sessionDataKey != null) {
           %>
           <div>
             <input
