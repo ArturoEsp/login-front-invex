@@ -41,11 +41,15 @@
     isRecoveryEPAvailable = isRecoveryEPAvailable();
   }
 
+  isRecoveryEPAvailable = isRecoveryEPAvailable();
+
   if (enableSelfSignUpEndpoint != "") {
     isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
   } else {
     isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
   }
+
+  isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
 
   if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
     String scheme = request.getScheme();
@@ -63,6 +67,8 @@
     if (identityMgtEndpointContext != "") {
         identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
     }
+
+    identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
   }
 %>
 
