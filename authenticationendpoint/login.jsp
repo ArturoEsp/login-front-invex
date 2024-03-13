@@ -19,9 +19,6 @@
 <%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
-<jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
-
-
 <%!
   private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
   private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
@@ -38,13 +35,13 @@
   String urlEncodedURL = "";
   String urlParameters = "";
 
-  if (StringUtils.isNotBlank(recoveryEPAvailable)) {
+  if (recoveryEPAvailable != "") {
     isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
   } else {
     isRecoveryEPAvailable = isRecoveryEPAvailable();
   }
 
-  if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
+  if (enableSelfSignUpEndpoint != "") {
     isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
   } else {
     isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
@@ -63,20 +60,31 @@
 
     identityMgtEndpointContext =
             application.getInitParameter("IdentityManagementEndpointContextURL");
-    if (StringUtils.isBlank(identityMgtEndpointContext)) {
+    if (identityMgtEndpointContext != "") {
         identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
     }
   }
+%>
 
-  private String getRecoverAccountUrl (
-    String identityMgtEndpointContext,
-    String urlEncodedURL,
-    boolean isUsernameRecovery,
-    String urlParameters) {
+<%!
+    private String getRecoverAccountUrl (
+        String identityMgtEndpointContext,
+        String urlEncodedURL,
+        boolean isUsernameRecovery,
+        String urlParameters) {
 
-    return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
-        "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-  }
+        return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
+            "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+    }
+
+    private String getRegistrationUrl (
+        String identityMgtEndpointContext,
+        String urlEncodedURL,
+        String urlParameters) {
+
+        return identityMgtEndpointContext + "/register.do?" + urlParameters +
+            "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
+    }
 %>
 
 <!DOCTYPE html>
