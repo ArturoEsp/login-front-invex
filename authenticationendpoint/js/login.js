@@ -10,12 +10,6 @@ const formSubmit = document.querySelector("#formSubmit");
 const paramAuthFailureMsg = "authFailureMsg";
 const paramAuthFailure = "authFailure";
 
-// Recover Password
-const btnSubmitRecover = document.querySelector("#btnRecover");
-const btnBackLogin = document.querySelector("#btnBackLogin");
-const formSubmitRecover = document.querySelector("#recoverDetailsForm");
-
-
 const hideMessageError = () => messageAlert.classList.add('hide');
 
 if (togglePassword) {
@@ -68,31 +62,3 @@ $(document).ready(function () {
     btnSubmit.disabled = false;
   }
 });
-
-if (btnBackLogin) {
-  btnBackLogin.addEventListener("click", function () {
-    constants.backLogin();
-  });
-}
-
-// Recover password functions
-if (btnSubmitRecover) {
-  btnSubmitRecover.addEventListener("click", function () {
-    const userName = document.getElementById('username').value;
-
-    if (!userName) {
-      showMessageError('Ingresa el nombre de tu usuario.');
-      return;
-    }
-
-    if (userName.includes('@invex.com')) {
-      document.getElementById('username').value = userName + '@carbon.super';
-    } else if (userName.includes('@invex.com@carbon.super')) {
-      document.getElementById('username').value = userName;
-    }
-
-    hideMessageError();
-    btnSubmitRecover.disabled = true;
-    formSubmitRecover.submit();
-  });
-}
