@@ -29,7 +29,7 @@
   private static final String TENANT_DOMAIN = "tenant-domain";
 %>
 
-<%!
+<%
   String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
   String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
   Boolean isRecoveryEPAvailable = false;
