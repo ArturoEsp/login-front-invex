@@ -1,5 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
 <%@ page import="org.apache.cxf.jaxrs.client.WebClient" %>
@@ -21,6 +19,9 @@
 <%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
 
+<jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
+
+
 <%!
   private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
   private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
@@ -29,24 +30,24 @@
 %>
 
 <%!
+  String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
+  String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
+  Boolean isRecoveryEPAvailable = false;
+  Boolean isSelfSignUpEPAvailable = false;
   String identityMgtEndpointContext = "";
   String urlEncodedURL = "";
   String urlParameters = "";
-  Boolean isRecoveryEPAvailable = false;
-  Boolean isSelfSignUpEPAvailable = false;
-  String recoveryEPAvailable = application.getInitParameter("EnableRecoveryEndpoint");
-  String enableSelfSignUpEndpoint = application.getInitParameter("EnableSelfSignUpEndpoint");
 
   if (StringUtils.isNotBlank(recoveryEPAvailable)) {
-      isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
+    isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
   } else {
-      isRecoveryEPAvailable = isRecoveryEPAvailable();
+    isRecoveryEPAvailable = isRecoveryEPAvailable();
   }
 
   if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
-      isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
+    isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
   } else {
-      isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
+    isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
   }
 
   if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
@@ -59,17 +60,20 @@
 
     urlEncodedURL = URLEncoder.encode(urlWithoutEncoding, UTF_8);
     urlParameters = prmstr;
-    identityMgtEndpointContext = application.getInitParameter("IdentityManagementEndpointContextURL");
+
+    identityMgtEndpointContext =
+            application.getInitParameter("IdentityManagementEndpointContextURL");
     if (StringUtils.isBlank(identityMgtEndpointContext)) {
         identityMgtEndpointContext = getServerURL("/accountrecoveryendpoint", true, true);
     }
-  } 
+  }
 
-   private String getRecoverAccountUrl (
+  private String getRecoverAccountUrl (
     String identityMgtEndpointContext,
     String urlEncodedURL,
     boolean isUsernameRecovery,
     String urlParameters) {
+
     return identityMgtEndpointContext + "/recoveraccountrouter.do?" + urlParameters +
         "&isUsernameRecovery=" + isUsernameRecovery + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
   }
