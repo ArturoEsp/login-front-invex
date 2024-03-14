@@ -173,8 +173,8 @@
           </button>
         </form>
 
-        <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
-          Recuperar contraseña
+        <a class="text-muted m-top-24 " id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
+          Olvide mi contraseña
         </a>
       </div>
     </div>

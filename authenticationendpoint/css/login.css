@@ -58,6 +58,10 @@ body {
   padding: 32px;
 }
 
+.m-top-24 {
+  margin-top: 24px;
+}
+
 h1, h2, h3, h4, p {
   color: var(--color-text);
 }
@@ -283,6 +287,16 @@ button {
 
 .form__field:required, .form__field:invalid {
   box-shadow: none;
+}
+
+.text-muted {
+  color: #666666;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.text-muted:hover {
+  color: #000;
 }
 
 @media screen and (max-width: 990px) {

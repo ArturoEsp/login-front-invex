@@ -1,5 +1,62 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%@ page import="org.apache.commons.collections.map.HashedMap" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RecoveryInitiatingRequest" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
+<%@ page import="java.io.File" %>
+<%@ page import="java.net.URISyntaxException" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+
+<%
+    String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
+
+    User user = IdentityManagementServiceUtil.getInstance().getUser(username);
+
+    NotificationApi notificationApi = new NotificationApi();
+
+    RecoveryInitiatingRequest recoveryInitiatingRequest = new RecoveryInitiatingRequest();
+    recoveryInitiatingRequest.setUser(user);
+    String callback = (String) request.getAttribute("callback");
+    String sessionDataKey = (String) request.getAttribute("sessionDataKey");
+    if (StringUtils.isBlank(callback)) {
+        callback = IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
+    }
+    List<Property> properties = new ArrayList<Property>();
+    Property property = new Property();
+    property.setKey("callback");
+    property.setValue(URLEncoder.encode(callback, "UTF-8"));
+    properties.add(property);
+    Property sessionDataKeyProperty = new Property();
+    sessionDataKeyProperty.setKey("sessionDataKey");
+    sessionDataKeyProperty.setValue(sessionDataKey);
+    properties.add(sessionDataKeyProperty);
+    recoveryInitiatingRequest.setProperties(properties);
+
+    try {
+        Map<String, String> requestHeaders = new HashedMap();
+        if (request.getParameter("g-recaptcha-response") != null) {
+            requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
+        }
+        notificationApi.recoverPasswordPost(recoveryInitiatingRequest, null, null, requestHeaders);
+    } catch (ApiException e) {
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
+%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
