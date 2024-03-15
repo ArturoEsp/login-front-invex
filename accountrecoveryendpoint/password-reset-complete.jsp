@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %><%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.json.simple.JSONObject" %>
 <%@ page import="org.owasp.encoder.Encode" %>
