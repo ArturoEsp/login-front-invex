@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %><%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.json.simple.JSONObject" %>
@@ -29,6 +29,7 @@
 <%@ page import="static java.util.stream.Collectors.groupingBy" %>
 <%@ page import="static java.util.stream.Collectors.mapping" %>
 <%@ page import="java.net.URLDecoder" %>
+
 
 <%!
     private static String decode(final String encoded) {
@@ -161,7 +162,6 @@
 
     session.invalidate();
 %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!doctype html>
 <html>
@@ -197,7 +197,7 @@
       <div class="center-content padding-32">
         <div class="SquareBox flex gap-24 column" style="max-width: 460px">
           <h3 class="text-aling-center ">Tu contraseña ha sido actualizada satisfactoriamente.</h3>
-            <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>"" class="button-form" id="closeButton">
+            <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>" class="button-form" id="closeButton">
                 Iniciar sesión
             </a>
         </div>
