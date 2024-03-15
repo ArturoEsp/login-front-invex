@@ -10,6 +10,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Error" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ResetPasswordRequest" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.recovery.util.Utils" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.io.UnsupportedEncodingException" %>
@@ -29,6 +30,8 @@
 <%@ page import="static java.util.stream.Collectors.groupingBy" %>
 <%@ page import="static java.util.stream.Collectors.mapping" %>
 <%@ page import="java.net.URLDecoder" %>
+
+<jsp:directive.include file="includes/localize.jsp"/>
 
 
 <%!
