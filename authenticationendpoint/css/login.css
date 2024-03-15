@@ -191,6 +191,8 @@ button {
   letter-spacing: 0.3px;
   border-radius: var(--border-radius-input);
   transition: all .25s ease-in-out;
+  text-decoration: none;
+  text-align: center;
 }
 
 .button-form:disabled,

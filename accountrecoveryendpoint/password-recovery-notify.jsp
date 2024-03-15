@@ -63,6 +63,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../authenticationendpoint/css/login.css" />
+    <link rel="shortcut icon" href="https://www.invextarjetas.com.mx/invex/landings/LandingGenericaVolarisInvex/img/favicon.png" type="image/x-icon">
     <script src="../authenticationendpoint/js/utils.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
