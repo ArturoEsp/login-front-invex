@@ -124,7 +124,7 @@
     <div class="Header">
       <div class="logo">
         <img
-          src="https://d2ra1qv4p9we6t.cloudfront.net/uploads/b45a8fe4-7369-46c1-937f-40e77314dade/original/invex-logo.svg"
+          src="https://d2ra1qv4p9we6t.cloudfront.net/uploads/1b7ffff6-aca5-4737-b564-78d0023b12a2/original/invex.svg"
           alt="Logo INVEX"
         />
       </div>
