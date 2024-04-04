@@ -20,9 +20,11 @@ if (togglePassword) {
   });
 }
 
-buttonCloseMessageAlert.addEventListener("click", function () {
-  hideMessageError();
-});
+if (buttonCloseMessageAlert) {
+  buttonCloseMessageAlert.addEventListener("click", function () {
+    hideMessageError();
+  });
+}
 
 const showMessageError = (message) => {
   textMessageAlert.innerHTML = message.replace("?", "");
